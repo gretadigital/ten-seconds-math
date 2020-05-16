@@ -1,6 +1,8 @@
 $(document).ready(function () {
   var currentQuestion;
   var timeLeft = 10;
+  var score = 0;
+  var interval;
 
   var randomNumberGenerator = function (size) {
     return Math.ceil(Math.random() * size);
@@ -24,6 +26,14 @@ $(document).ready(function () {
   var updateTimeLeft = function (amount) {
     timeLeft += amount;
     $('#time-left').text(timeLeft);
+    if (timeLeft > 3) {
+      $('#time-left').css('color', 'green');
+    }
+  };
+
+  var updateScore = function (amount) {
+    score += amount;
+    $('#score').text(score);
   };
 
   var checkAnswer = function (userInput, answer) {
@@ -31,6 +41,7 @@ $(document).ready(function () {
       renderNewQuestion();
       $('#user-input').val('');
       updateTimeLeft(+1);
+      updateScore(+1);
     }
   };
 
@@ -38,10 +49,41 @@ $(document).ready(function () {
     checkAnswer(Number($(this).val()), currentQuestion.answer);
   });
 
-  var interval = setInterval(function () {
-    updateTimeLeft(-1);
-    if (timeLeft === 0) {
-      clearInterval(interval);
+  var startGame = function () {
+    if (!interval) {
+      if (timeLeft === 0) {
+        updateTimeLeft(10);
+        updateScore(-score);
+      }
+      interval = setInterval(function () {
+        updateTimeLeft(-1);
+        if (timeLeft === 0) {
+          clearInterval(interval);
+          interval = undefined;
+        }
+        if (timeLeft <= 3) {
+          $('#time-left').css('color', 'red');
+        }
+      }, 1000);
+    }
+  };
+
+  $('#user-input').on('keyup', function () {
+    startGame();
+    checkAnswer(Number($(this).val()), currentQuestion.answer);
+  });
+
+  function randomRGB() {
+    var r = Math.floor(Math.random() * 256);
+    var g = Math.floor(Math.random() * 256);
+    var b = Math.floor(Math.random() * 256);
+    return `rgb(${r},${g},${b})`;
+  }
+
+  var title = $('#title');
+  var titleColors = setInterval(function () {
+    for (var letters of title) {
+      letters.style.color = randomRGB();
     }
   }, 1000);
 
