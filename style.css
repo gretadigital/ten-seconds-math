@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@200;400;700&display=swap');
+
 body {
   font-family: 'Jost', sans-serif;
-  text-align: center;
 }
 
 *:focus {
@@ -12,7 +12,8 @@ input {
   border-radius: 4px;
 }
 
-input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }

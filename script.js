@@ -3,15 +3,31 @@ $(document).ready(function () {
   var timeLeft = 10;
   var score = 0;
   var interval;
+  var rangeValue;
 
   var randomNumberGenerator = function (size) {
     return Math.ceil(Math.random() * size);
   };
 
   var questionGenerator = function () {
+    var numberRange = document.getElementById('number-range');
+    var displayRange = document.getElementById('display-range');
+    displayRange.innerHTML = numberRange.value;
+
+    numberRange.oninput = function () {
+      displayRange.innerHTML = this.value;
+    };
+
+    rangeValue = parseInt($('#number-range').val());
+
+    $(document).on('input', '#number-range', function () {
+      rangeValue = $(this).val();
+    });
+
+    console.log(rangeValue);
     var question = {};
-    var num1 = randomNumberGenerator(10);
-    var num2 = randomNumberGenerator(10);
+    var num1 = randomNumberGenerator(rangeValue);
+    var num2 = randomNumberGenerator(rangeValue);
     question.answer = num1 + num2;
     question.equation = String(num1) + ' + ' + String(num2);
 
